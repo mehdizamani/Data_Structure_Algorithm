@@ -1,0 +1,76 @@
+
+#include "pch.h"
+#include <iostream>
+#include <vector>
+using namespace std;
+void merge(int vect[],int begin, int middle, int end)
+{
+	int leftArraySize = middle - begin + 1;
+	int rightArraySize = end - middle;
+
+	int left[5]; // TODO: 
+	int right[5];
+
+	int i = 0;
+	int j = 0;
+	int k = begin;
+	// copy data to the lft n right vector
+	for (int ii = 0; ii < leftArraySize; ii++)
+		left[ii] = vect[ii + begin];
+	for (int ii = 0; ii < rightArraySize; ii++)
+		right[ii] = vect[ii + middle + 1];
+	
+
+	while ((i < leftArraySize) && (j < rightArraySize))
+	{
+		if (left[i] <= right[j])
+		{
+			vect[k] = left[i];
+			i++;
+		}
+		else {
+			vect[k] = right[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < leftArraySize)
+	{
+		vect[k] = left[i];
+		i++;
+		k++;
+	}
+
+	while (j < rightArraySize)
+	{
+		vect[k] = right[j];
+		j++;
+		k++;
+	}
+}
+
+
+
+void sort(int entry[], int begin, int end)
+{
+	if (begin < end)
+	{
+		int iMiddlePoint = begin + (end - begin) / 2;
+		sort(entry,  begin, iMiddlePoint);
+		sort(entry, iMiddlePoint + 1, end);
+		merge(entry, begin, iMiddlePoint, end);
+	}
+}
+
+int main()
+{
+	int iToSort[4] = { 2,1,4,5 };
+	int num_elements = sizeof(iToSort) / sizeof(iToSort[0]);
+	sort(iToSort, 0, num_elements - 1);
+	for (int i = 0 ; i< num_elements ;i++)
+		cout << iToSort[i] << " ";
+	getchar();
+	return 0;
+
+}
