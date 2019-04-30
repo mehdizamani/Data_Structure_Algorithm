@@ -1,0 +1,80 @@
+
+#include "pch.h"
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+using namespace std;
+
+
+////// SOLOTUION ONE : 
+//
+//string obtainResult(int begin,string & str)
+//{
+//	cout << begin << endl;
+//	for (int i = begin ; i < begin + str.size(); i++)
+//	{
+//		if (i < 26)
+//			str[i- begin] = char(i + 97);
+//		else
+//			str[i- begin] = char(i - 26 + 97);
+//	}
+//	cout << str[0] << endl;
+//	return str;
+//
+//}
+//int whereToStart(int begin, int size, int key)
+//{
+//	return begin + key < 26 ? begin + key : ( begin + key)%26; 
+//}
+//
+//
+//string caesarCypherEncryptor(string str, int key) {
+//	 Write your code here.
+//	int begin= int(str[0])-97;
+//	cout << "begin" << begin << endl;
+//	int size = str.size();
+//	int key_divid = key % 26;
+//	begin = whereToStart(begin, size, key_divid);
+//	obtainResult(begin, str);
+//
+//	return str;
+//}
+//
+//int main()
+//{
+//	string str = "xyz";
+//	stringstream ss;
+//	ss <<	caesarCypherEncryptor(str,5);
+//	cout << ss.str();
+//
+//}
+//
+char putValues(int value, int key) {
+
+	return value + key <= 122 ? value + key : 97 + (value + key) % 122;
+
+
+}
+
+string caesarCypherEncryptor(string str, int key)
+{
+	int newKey = key % 26;
+	vector<char> vecStr;
+	for (int i = 0; i < str.size(); i++)
+	{
+		vecStr.push_back(putValues(int(str[i]), newKey));
+	}
+
+	return string(vecStr.begin(), vecStr.end());
+}
+
+
+int main()
+{
+	string str = "xyz";
+	stringstream ss;
+	ss <<	caesarCypherEncryptor(str,5);
+	cout << ss.str();
+
+}
