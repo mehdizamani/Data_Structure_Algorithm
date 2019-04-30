@@ -1,0 +1,51 @@
+#include "pch.h"
+#include <iostream>
+
+using namespace std;
+
+
+struct bstNode {
+	int value;
+	bstNode * right;
+	bstNode * left;
+};
+
+bstNode * creatNode(int value) {
+	bstNode * temp = new bstNode();
+	temp->value = value;
+	temp->left = temp->right = NULL;
+	return temp;
+}
+
+bstNode * insert(bstNode * root, int value)
+{
+	if (root == NULL)
+		root = creatNode(value);   // be causeful to put the creatNode value inside the root. and not returning the creatNode alone!
+	else if (root->value >= value)
+		root->left = insert(root->left, value);   // be careful to put the result into the root->left and not the root itself
+	else if (root->value < value)
+		root->right = insert(root->right, value); // be careful to put the result into the root->right and not the root itself
+	return root;
+}
+bool search(bstNode * root, int value)
+{
+	if (root == NULL)
+		return false;
+	else if (value == root->value)
+		return true;
+	else if (value <= root->value)
+		return search(root->left, value);
+	else
+		return search(root->right, value);
+}
+
+int main()
+{
+	bstNode * root = NULL;
+	root = insert(root, 12);
+	root = insert(root, 1);
+	root = insert(root, 4);
+	root = insert(root, 6);
+	root = insert(root, 9);
+	cout << search(root, 24);
+}
