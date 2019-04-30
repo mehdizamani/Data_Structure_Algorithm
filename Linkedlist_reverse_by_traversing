@@ -1,0 +1,107 @@
+
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+struct Node {
+	int value;
+	Node * next;
+};
+
+void insert(Node ** head, int x)
+{
+	Node * temp = new Node; //  or this one  ---->  (Node *)malloc(sizeof(Node));
+	temp->value = x;
+	temp->next = *head;
+	/*cout << "****" << endl;
+	cout << temp << endl;
+	cout << *head << endl;*/
+	*head = temp;
+}
+
+void print(Node * beginingNode)
+{
+	cout << "List is" << endl;
+	while (beginingNode != NULL)
+	{
+		cout << beginingNode->value << endl;
+		beginingNode = beginingNode->next;
+	}
+}
+void Delete(Node ** node, int a)
+{
+	Node * temp1 = *node;
+	if (a == 1)
+	{
+		*node = temp1->next;
+		delete(temp1);
+		return;     // LEARN HOW TO USE RETURN EVEN FOR VOID!!!!!!!!!
+	}
+	for (int i = 0; i < a - 2; i++)
+	{
+		temp1 = temp1->next;
+	}
+	Node *temp2 = temp1->next;
+	temp1->next = temp2->next;
+	delete temp2; // In the case of calloc ----> use free. In case of new Node -----> use delete
+}
+
+void reverse(Node ** head)
+{
+	if (*head == NULL)
+		return;
+	Node * temp = *head;
+	Node * temp2 = temp->next;
+	Node * temp3 = temp2;
+	//*head = NULL;
+	temp->next = NULL;
+
+
+	while (temp2 != NULL)
+	{
+		temp3 = temp2;
+		temp2 = temp3->next;
+		temp3->next = temp;
+		temp = temp3;
+	}
+
+	temp2 = temp;
+	*head = temp2;
+}
+
+// EASIER WAY
+void Reverse(Node** head)
+{
+	if (*head == NULL)
+		return;
+	Node * pre;
+	Node * cur;
+	Node * next;
+	pre = NULL;
+	cur = *head;
+	while (cur != NULL) {
+		next = cur->next ;
+		cur->next = pre;
+		pre = cur;
+		cur = next;
+	}
+	*head = pre;
+}
+int main()
+{
+	Node * head = NULL;
+
+	int input[4];
+	input[0] = 11;
+	input[1] = 22;
+	input[2] = 33;
+	insert(&head, input[2]);
+	insert(&head, input[1]);
+	insert(&head, input[0]);
+	input[3] = 44;
+	//Delete(&head, 1);
+	print(head);
+	reverse(&head);
+	Reverse(&head);
+	print(head);
+}
