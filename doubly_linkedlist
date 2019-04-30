@@ -1,0 +1,78 @@
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+
+struct Node {
+	int value;
+	Node * pre;
+	Node * next;
+};
+
+Node * create_node(int x) {
+	Node * temp = new Node;
+	temp->value = x;
+	temp->next = NULL;
+	temp->pre = NULL;
+	return temp;
+}
+
+void insert_value(Node** head,int x)
+{
+	Node * temp=create_node(x);
+	if (*head == NULL)
+	{
+		*head = temp;
+		return;
+	}
+	temp->next = *head;
+	(*head)->pre = temp; 
+	*head = temp;
+}
+
+void print(Node* node)
+{
+	Node * temp = node;
+	while (node != NULL)
+	{
+		cout << node->value << " ";
+		node = node->next;
+	}
+}
+void delete_At_p(Node ** head, int x)
+{
+	Node * head_backup = *head;
+	int cnt = 1;
+	while (((head_backup) != NULL) & (cnt < x))
+	{
+		head_backup = (head_backup)->next;
+		cnt++;
+	}
+	if (((head_backup) != NULL) & (cnt==x))
+	{
+		Node * next = (head_backup)->next;
+		Node * pre  = (head_backup)->pre;
+		if (next != NULL)
+			next->pre = pre;
+		else
+			pre->next = NULL;
+		if (pre != NULL)
+			pre->next = next;
+		else
+		{
+			next->pre = NULL;
+			*head = next;
+		}
+		delete (head_backup);
+	}
+}
+int main()
+{
+	Node * head = NULL;
+	insert_value(&head, 3);
+	insert_value(&head, 2);
+	insert_value(&head, 1);
+	print(head);
+	delete_At_p(&head, 1);
+	print(head);
+}
