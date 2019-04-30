@@ -1,0 +1,68 @@
+
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+struct Node {
+	int value;
+	Node * next;
+};
+
+void insert(Node ** head, int x)
+{
+	Node * temp = new Node; //  or this one  ---->  (Node *)malloc(sizeof(Node));
+	temp->value = x;
+	temp->next = *head;
+	/*cout << "****" << endl;
+	cout << temp << endl;
+	cout << *head << endl;*/
+	*head = temp;
+}
+
+void print(Node * beginingNode)
+{
+	cout << "List is" << endl;
+	while (beginingNode != NULL)
+	{
+		cout << beginingNode->value << endl;
+		beginingNode = beginingNode->next;
+	}
+}
+
+void insert_middle(Node ** head, int val,  int position) {
+//	Node * temp = (Node *)malloc(sizeof(Node));
+	Node * head_backup = *head;
+	Node * temp = new Node; 
+	temp->value = val;
+	temp->next = NULL;
+	if (position == 1)
+		insert(head,val);
+	else
+	{
+		int cnt = 2;
+		while (cnt < position)
+		{
+			head_backup = head_backup->next;
+			cnt++;
+		}
+
+		temp->next = head_backup->next;
+		head_backup->next = temp;
+	}
+}
+int main()
+{
+	Node * head = NULL;
+
+	int input[4];
+	input[0] = 11;
+	input[1] = 22;
+	input[2] = 33;
+	//Node * head;
+	insert(&head, input[0]);
+	insert(&head, input[1]);
+	insert(&head, input[2]);
+	input[3] = 44;
+	insert_middle(&head, input[3], 1);
+	print(head);
+}
