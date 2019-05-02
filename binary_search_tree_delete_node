@@ -1,0 +1,166 @@
+// breadth_first_travers_in_binary_tree.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct BstNode {
+	int value;
+	BstNode * right;
+	BstNode * left;
+};
+
+BstNode * GetANode(int value)
+{
+	BstNode * temp = new BstNode();
+	temp->value = value;
+	temp->left = temp->right = NULL;
+	return temp;
+}
+
+BstNode * insert(BstNode * root, int val)
+{
+	if (root == NULL)
+		root = GetANode(val);
+	else if (val <= root->value)
+		root->left = insert(root->left, val);
+	else if (val > root->value)
+		root->right = insert(root->right, val);
+	return root;
+}
+
+BstNode * FindMin(BstNode *root)
+{
+	BstNode * temp = root;
+	while (temp->left != NULL)
+		temp = temp->left;
+	return temp;
+}
+
+
+// very very tricky function
+BstNode * Delete(BstNode *root, int val)
+{
+	if (root == NULL)
+		return NULL;
+	if (root->value > val)
+		root->left = Delete(root->left, val);
+	else if (root->value < val)
+		root->right = Delete(root->right, val);
+	else // root->val == val
+	{
+		// case 1: no child
+		
+		if ((root->right == NULL) && (root->left == NULL))
+		{ 
+			delete root;
+			root = NULL;
+		}
+		
+		// case 2. one child
+		if (root->right == NULL)
+		{
+			BstNode * temp = root->left;
+			delete(root);
+			return (temp);
+		}
+		else if (root->left == NULL)
+		{
+			BstNode * temp = root->right;
+			delete(root);
+			return (temp);
+		}
+		// case 3. 2 children
+		else
+		{
+			BstNode* temp = FindMin(root->right);
+			root->value = temp->value;
+			root->right = Delete(root->right, temp->value);
+		}
+		
+	}
+
+	return root;
+
+}
+
+// GEEKSFORGEEKS implementation:
+BstNode * deleteNode(struct BstNode* root, int key)
+{
+	// base case 
+	if (root == NULL) return root;
+
+	// If the key to be deleted is smaller than the root's key, 
+	// then it lies in left subtree 
+	if (key < root->value)
+		root->left = deleteNode(root->left, key);
+
+	// If the key to be deleted is greater than the root's key, 
+	// then it lies in right subtree 
+	else if (key > root->value)
+		root->right = deleteNode(root->right, key);
+
+	// if key is same as root's key, then This is the node 
+	// to be deleted 
+	else
+	{
+		// node with only one child or no child 
+		if (root->left == NULL)
+		{
+			 BstNode *temp = root->right;
+			free(root);
+			return temp;
+		}
+		else if (root->right == NULL)
+		{
+			 BstNode *temp = root->left;
+			free(root);
+			return temp;
+		}
+
+		// node with two children: Get the inorder successor (smallest 
+		// in the right subtree) 
+		 BstNode* temp = FindMin(root->right);
+
+		// Copy the inorder successor's content to this node 
+		root->value = temp->value;
+
+		// Delete the inorder successor 
+		root->right = deleteNode(root->right, temp->value);
+	}
+	return root;
+}
+
+
+bool search(BstNode * root, int value)
+{
+	if (root == NULL)
+		return false;
+	else if (value == root->value)
+		return true;
+	else if (value <= root->value)
+		return search(root->left, value);
+	else
+		return search(root->right, value);
+}
+
+
+int main()
+{
+	BstNode * temp = NULL;
+	temp = insert(temp, 9);
+	temp = insert(temp, 8);
+	temp = insert(temp, 7);
+	temp = insert(temp, 6);
+	temp = insert(temp, 5);
+	temp = insert(temp, 4);
+	temp = insert(temp, 3);
+	temp = insert(temp, 2);
+	temp = insert(temp, 1);
+
+	std::cout << search(temp, 5);
+	temp = Delete(temp, 5);
+	std::cout << search(temp, 5);
+}
