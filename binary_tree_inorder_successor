@@ -1,0 +1,104 @@
+// binery_search_tree_inorder_succesor.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+// we assume the node has a parent pointer as well
+struct BstNode {
+	int value;
+	BstNode * left;
+	BstNode * right;
+	BstNode * parent;
+};
+
+BstNode * GetANode(int val)
+{
+	BstNode * temp = new BstNode();
+	temp->value = val;
+	temp->right = NULL;
+	temp->left = NULL;
+	temp->parent = NULL;
+	return temp;
+}
+
+BstNode * Insert(BstNode *root, int val)
+{
+	if (root == NULL)
+	{
+		BstNode * temp = GetANode(val);
+		root = temp;
+	}
+	else
+	{
+		BstNode * temp1 = NULL;
+		if (root->value > val)
+		{
+			temp1 = Insert(root->left, val);
+			root->left = temp1;
+			temp1->parent = root;
+		}
+		else if (root->value < val)
+		{
+			temp1 = Insert(root->right, val);
+			root->right = temp1;
+			temp1->parent = root;
+		}
+	}
+	return root;
+}
+
+BstNode* MinValue(BstNode*root)
+{
+	BstNode* temp = root;
+	while (temp->left != NULL)
+		temp = temp->left;
+	return temp;
+}
+
+int InOrderSuccesor(BstNode * root, BstNode* target)
+{
+	if (target == NULL)
+		return -1;
+	else if (target->right != NULL)
+	{
+		BstNode* temp = MinValue(target->right);
+		return temp->value;
+	}
+	else if (target->right == NULL)
+	{
+		BstNode* temp = target->parent;
+		while (target->value > temp->value)
+			temp = temp->parent;
+		return temp->value;
+	}
+}
+  
+/*
+              20
+           /     \
+	      8         22
+		/   \
+     4          12
+	          /  \
+			10    14
+
+*/
+
+int main()
+{
+	BstNode * root = NULL;
+	root = Insert(root, 20);
+	root = Insert(root, 8);
+	root = Insert(root, 22);
+	root = Insert(root, 4);
+	root = Insert(root, 12);
+	root = Insert(root, 10);
+	root = Insert(root, 14);
+	//temp = Insert(temp, 10);
+	BstNode *temp2 = root->left->right->right;
+	std::cout << temp2->value;   // 14
+	std::cout << InOrderSuccesor(root, temp2);  // 20
+    
+}
