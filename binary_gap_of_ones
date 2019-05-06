@@ -1,0 +1,41 @@
+
+#include "pch.h"
+#include <iostream>
+#include <stack>
+using namespace std;
+int binaryGap(int a)
+{
+	int answer = 0;
+	int divid = a;
+	int temp = 0;
+	bool bFindFirstOne = false;
+	stack<int> s;
+	while (divid > 0)
+	{
+		if (divid % 2 == 0)
+		{
+			if (bFindFirstOne == true)
+				temp++;
+		}
+		else if (divid % 2 == 1)
+		{
+			bFindFirstOne = true;
+			answer = answer > temp ? answer : temp;
+			temp = 0;
+		}
+		s.push(divid % 2);
+		divid = divid / 2;
+	}
+	while (s.size() > 0)
+	{
+		cout << s.top() ;
+		s.pop();
+	}
+	cout << endl;
+	return answer;
+}
+
+int main()
+{
+	cout<< binaryGap(64);
+}
