@@ -3,6 +3,10 @@
 #include <iostream>
 #include <stack>
 using namespace std;
+
+
+// this code returns the maximum number of zeros between two one in a binary desxription of an integer number
+// if you want to see the maximum distance between two one in a binary description, check the LEETCODE solution below
 int binaryGap(int a)
 {
 	int answer = 0;
