@@ -1,0 +1,36 @@
+// reverse_integer.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+int reverse_int(int target)
+{
+	int result=0;
+	int temp = 0;
+	int pop = 0;
+	// think about how it is done in one loop only
+	//think about pop and result construction
+	// the if s are b/c of the fact that:
+	//Assume we are dealing with an environment which could only store integers within the 32 - bit signed 
+	//integer range : [−231, 231 − 1].For the purpose of this problem, assume that your function returns 0
+	//when the reversed integer overflows.
+	while (target != 0)
+	{
+		pop = target % 10;
+		target = target / 10;
+		result = result * 10 + pop;
+		if (temp > INT_MAX / 10 || (temp == INT_MAX / 10 &&  pop > 7)) return 0;
+		if (temp < INT_MIN / 10 || (temp == INT_MIN / 10 && pop < -8)) return 0;
+	}
+	//result = target > 0 ? result : -1 * result;
+	return result;
+}
+int main()
+{
+	int target = -312;
+	cout << reverse_int(target);
+}
