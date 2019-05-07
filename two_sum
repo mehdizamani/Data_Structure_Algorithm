@@ -1,0 +1,47 @@
+// two_sum.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+
+vector<int> TwoSum(int input[],int size, int target)
+{
+	unordered_map <int, int> m;
+	for (int i = 0; i < size ; i++)
+	{
+		if (m.find(target - input[i]) != m.end())
+			return {m[target - input[i]], i};
+		m[input[i]] = i;
+	}
+	return {};
+}
+vector <int> TwoSum_asVector(vector<int> input, int target)
+{
+	unordered_map <int, int> m;
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (m.find(target - input[i]) != m.end())
+			return { m[target - input[i]], i };
+		m[input[i]] = i;
+	}
+	return {};
+}
+
+int main()
+{
+	// find the two number that equals target
+	// two types of function call, with array and with vector
+	// with array we need to pass the size too!
+	int input[6] = { 2,5,12,14,3,9};
+	vector<int> input2 = { 2,5,12,14,3,9 };
+	int target = 5;
+	cout << TwoSum(input, sizeof(input) / sizeof(int), target)[0] << "  "
+		<< TwoSum(input, sizeof(input) / sizeof(int), target)[1] <<endl;
+	
+	cout << TwoSum_asVector(input2, target)[0] <<" " <<
+		TwoSum_asVector(input2, target)[1] << endl;
+}
