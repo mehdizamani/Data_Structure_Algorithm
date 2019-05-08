@@ -1,0 +1,47 @@
+// roman_to_int.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int roman_to_int(string s, unordered_map<char, int> m)
+{
+	signed int i=0;
+	int size=s.size();
+	int sum = 0;
+	while (i < size) 
+	{
+		// if s.size() is used instead of size, error happens!!! WEIRD !! 
+		// therefore, we should put the s.size() into size
+		if ( m[s[i]] < m[s[i + 1]] && i < size - 1)    
+		{
+			sum += ( m[s[i + 1]] - m[s[i]] );
+			i++;
+		}
+		else if ( m[s[i]] >= m[s[i + 1]] && i < size - 1 )  // very tricky about the conditions and >=  signs. not >
+		{
+			sum += m[s[i]] + m[s[i + 1]];
+			i++;
+		}
+		else if (i == size - 1)
+			sum += m[s[i]];
+		i++;
+	}
+	
+	return sum;
+}
+int main()
+{
+	unordered_map<char,int> m;
+	m['I'] = 1;
+	m['V'] = 5;
+	m['X'] = 10;
+	m['L'] = 50;
+	m['C'] = 100;
+	m['D'] = 500;
+	m['M'] = 1000;
+	string s = "XXIVII";
+	cout << roman_to_int(s,m);  
+}
