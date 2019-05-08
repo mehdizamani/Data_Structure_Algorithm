@@ -22,8 +22,7 @@ int roman_to_int(string s, unordered_map<char, int> m)
 		}
 		else if ( m[s[i]] >= m[s[i + 1]] && i < size - 1 )  // very tricky about the conditions and >=  signs. not >
 		{
-			sum += m[s[i]] + m[s[i + 1]];
-			i++;
+			sum += m[s[i]]; // the following it wrong !!! sum += m[s[i]] + m[s[i + 1]];   i++;
 		}
 		else if (i == size - 1)
 			sum += m[s[i]];
