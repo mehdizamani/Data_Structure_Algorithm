@@ -1,0 +1,54 @@
+// longest_common_prefix.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+using namespace std;
+
+class Solution
+{
+public:
+	string longestCommonPrefix(vector<string> strs)
+	{
+		string output;
+		if (strs.size() == 0)
+			return "";
+		else if (strs.size() == 1)
+			return strs[0];
+		else if (strs.size() > 1)
+		{
+			int maxLengh = INT_MAX;
+			for (int i = 0; i < strs.size(); i++)
+				maxLengh = (maxLengh > strs[i].size()) ? strs[i].size() : maxLengh;
+			for (int j = 0; j < maxLengh; j++)
+			{
+				char temp = strs[0][j];
+				int i = 1;
+				while (i < strs.size())
+				{
+					if (temp != strs[i][j])
+						break;
+					i++;
+				}
+				if (i == strs.size())
+					output += temp;
+				else
+					break;
+			}
+
+		}
+		return output;
+	}
+};
+
+int main()
+{
+	Solution sol;
+	vector<string> inp = { "aca","cba" };
+	cout<< sol.longestCommonPrefix(inp);
+
+}
