@@ -43,12 +43,12 @@ void delete_At_p(Node ** head, int x)
 {
 	Node * head_backup = *head;
 	int cnt = 1;
-	while (((head_backup) != NULL) & (cnt < x))
+	while (((head_backup) != NULL) && (cnt < x))
 	{
 		head_backup = (head_backup)->next;
 		cnt++;
 	}
-	if (((head_backup) != NULL) & (cnt==x))
+	if (((head_backup) != NULL) && (cnt==x))
 	{
 		Node * next = (head_backup)->next;
 		Node * pre  = (head_backup)->pre;
