@@ -1,0 +1,49 @@
+
+class Solution {
+public:
+	void recursive(vector<int> &d, vector<int>& c, int& res)
+	{
+		make_heap(d.begin(), d.end());
+		make_heap(c.begin(), c.end());
+		//		cout << d.front();
+		if (d.front() == 0 && c.front() == 0)
+			return;
+		int minmax = min(d.front(), c.front());
+		d.front() -= minmax;
+		c.front() -= minmax;
+		res++;
+		recursive(d, c, res);
+
+	}
+	int minTransfers(vector<vector<int>>& transactions) {
+
+		int output = 0;
+		unordered_map<int, int> m;
+		vector<int> debth;
+		vector<int> credit;
+		for (auto i : transactions) {
+			m[i[0]] += i[2];
+			m[i[1]] -= i[2];
+		}
+		for (auto i : m)
+		{
+			if (i.second != 0) {
+					if (i.second < 0)
+						debth.push_back(-1 * i.second);
+					if (i.second > 0)
+						credit.push_back(i.second);
+			}
+		}
+		if (debth.size() > 0)
+			recursive(debth, credit, output);
+		return output;
+	}
+};
+
+int main()
+{
+	vector<vector<int>> a = { { 1,2,5 }, { 3,4,6 }, { 0,5,2 }, { 0,6,2 }, { 0,7,2 }, { 0,8,2 }};  //{ {0,1,10},{1,0,1}, {1,2,5}, {2,0,5 }};// { {0,1,1}, {1,2,1}, {2,0,1} }; //{ {1,0,10},{1,0,10} };  
+	Solution sol;
+	std::cout << sol.minTransfers(a);
+
+}
