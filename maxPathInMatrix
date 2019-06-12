@@ -1,0 +1,124 @@
+// cherry_pickup.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+//Finding the recursive way for maximum path problem with -1 as block cell.
+// This solution is O(2^(n+m)) 
+
+class Solution {
+public:
+	
+	int maxPath(vector<vector<bool>>& visited, vector<vector<int>>& grid, int i, int j) {
+		int nRow= grid.size();
+		int nCol = grid[0].size();
+		if (i == nRow - 1 && j == nCol - 1) 
+			return grid[i][j];
+
+		if (visited[i][j])
+			return grid[i][j];
+		else	//if (!visited[i][j])
+		{
+			if ((i < nRow - 1) && (j == nCol - 1))
+			{
+				if (grid[i + 1][j] != -1)
+					grid[i][j] = grid[i][j] + maxPath(visited, grid, i + 1, j);
+				else if (grid[i + 1][j] == -1)
+					return grid[i][j];
+			}
+			else if ((i == nRow - 1 ) && (j < nCol - 1))
+			{
+				if (grid[i][j+1] != -1)
+					grid[i][j] = grid[i][j] + maxPath(visited, grid, i, j + 1);
+				else if (grid[i][j+1] == -1)
+					return grid[i][j];
+			}
+			else if ((i < nRow - 1 ) && (j < nCol - 1))
+			{
+				if (grid[i][j + 1] != -1 && grid[i + 1][j] != -1)
+					grid[i][j] += max(maxPath(visited, grid, i + 1, j), maxPath(visited, grid, i, j + 1));
+				else if (grid[i][j + 1] == -1 && grid[i + 1][j] != -1)
+					grid[i][j] += maxPath(visited, grid, i + 1, j);
+				else if (grid[i][j + 1] != -1 && grid[i + 1][j] == -1)
+					grid[i][j] += maxPath(visited, grid, i, j + 1);
+				else if (grid[i][j + 1] == -1 && grid[i + 1][j] == -1)
+					return -1;//grid[i][j];
+				
+			}
+			visited[i][j] = true;
+			return grid[i][j];
+		}
+	}
+	vector<vector<int>> dp_back(vector<vector<int>>& g) {
+		vector<vector<bool>> visited(g.size(),vector<bool> (g[0].size(), 0));
+		//temp = g;
+		int cherries= maxPath(visited, g, 0,0);
+		cout << cherries << endl;
+		return g;
+	}
+};
+
+
+// There are other faster approaches O(mn)
+class Solution_Omn {
+public:
+	int maxPathWithNoBlockage(vector<vector<int>>& grid) {
+		int nr = grid.size();
+		int nc = grid[0].size();
+		for (int i = nr - 1; i >= 0; i--)
+			for (int j = nc - 1; j >= 0; j--)
+			{
+				if (j == nc - 1 && i != nr - 1)
+					grid[i][j] +=  grid[i + 1][j];
+				else if (j != nc - 1 && i == nr - 1)
+					grid[i][j] += grid[i][j + 1];
+				else if (j != nc - 1 && i != nr - 1)
+					grid[i][j] +=  max(grid[i + 1][j], grid[i][j + 1]);
+				else
+					grid[i][j] = grid[i][j];
+			}
+		return grid[0][0];
+	}
+	int maxPathWithBlockage(vector<vector<int>>& grid) {
+		int nr = grid.size();
+		int nc = grid[0].size();
+		int extra = 0;
+		for (int i = nr - 1; i >= 0; i--)
+			for (int j = nc - 1; j >= 0; j--)
+			{
+				if (grid[i][j] >= 0)
+				{
+					if (j == nc - 1 && i != nr - 1)
+						grid[i][j] += max(extra, grid[i + 1][j]);
+					else if (j != nc - 1 && i == nr - 1)
+						grid[i][j] += max(extra, grid[i][j + 1]);
+					else if (j != nc - 1 && i != nr - 1)
+						grid[i][j] += max(max(grid[i + 1][j], extra), max(grid[i][j + 1], extra));
+					else
+						grid[i][j] = grid[i][j];
+				}
+			}
+		return grid[0][0];
+	}
+
+};
+
+
+int main()
+{
+	Solution sol;
+	vector<vector<int>> grid;
+	grid = { {1 , 1 , 0},
+			{1 , -1 , -1},
+			{1 , -1 , 1}, };
+	//vector<vector<int>> dp_bck;
+	//grid = sol.dp_back(grid);
+	Solution_Omn solOmn;
+	solOmn.maxPathWithBlockage(grid);
+	for (auto i : grid)
+		cout << i[0] << " " << i[1]<<" " << i[2]<<" " <<endl;
+}
