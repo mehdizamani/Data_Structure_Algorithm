@@ -1,0 +1,68 @@
+      10
+    5      15
+  2    5       20
+ 1
+ 
+ In order travers: 1 2 5 5 10 15 20   
+ Pre order travers:  10 5 2 1 5 15 20  -> DFS
+ Post order travers: 1 2 5 5 20 15 10
+ 
+ // ANSWER:
+ 
+ // Copyright © 2019 AlgoExpert, LLC. All rights reserved.
+
+#include <vector>
+using namespace std;
+
+class BST {
+  public:
+    int value;
+    BST* left;
+    BST* right;
+
+    BST(int val);
+    BST& insert(int val);
+};
+
+// O(n) time | O(n) space
+vector<int> inOrderTraverse(BST* tree, vector<int> array) {
+  if (tree->left != NULL) {
+    array = inOrderTraverse(tree->left, array);
+  }
+  array.push_back(tree->value);
+  if (tree->right != NULL) {
+    array = inOrderTraverse(tree->right, array);
+  }
+  return array;
+}
+
+// O(n) time | O(n) space
+vector<int> preOrderTraverse(BST* tree, vector<int> array) {
+  array.push_back(tree->value);
+  if (tree->left != NULL) {
+    array = preOrderTraverse(tree->left, array);
+  }
+  if (tree->right != NULL) {
+    array = preOrderTraverse(tree->right, array);
+  }
+  return array;
+}
+
+// O(n) time | O(n) space
+vector<int> postOrderTraverse(BST* tree, vector<int> array) {
+  if (tree->left != NULL) {
+    array = postOrderTraverse(tree->left, array);
+  }
+  if (tree->right != NULL) {
+    array = postOrderTraverse(tree->right, array);
+  }
+  array.push_back(tree->value);
+  return array;
+}
+
+Video ExplanationGo to Conceptual OverviewGo to Code WalkthroughQuestions List
+Copyright © 2019 AlgoExpert, LLC. All rights reserved.
+Legal Stuff
+Privacy Policy
+Contact Us
+ 
