@@ -1,0 +1,49 @@
+
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> m1;
+        unordered_map<int, int> result;
+        vector<int> out;
+        //unordered_map m2;
+        for (int i=0;i<nums1.size();i++)
+            //m1.insert({i,nums1[i]});
+             m1[nums1[i]]=i;
+         //for (pair<int, int> element : m1)
+           //   std::cout << element.first << " :: " << element.second << std::endl;
+        //cout<<(m1.find(9)->first)<<endl;
+    
+        for (int i=0;i<nums2.size();i++)
+        {
+            if (m1.find(nums2[i])!=m1.end())
+            {
+                cout<<m1.find(nums2[i])->first<<endl;
+                if(result.find(nums2[i])==result.end())
+                {
+                    result[nums2[i]]=i;
+                    out.push_back(nums2[i]);
+                 }
+            }
+        }
+        return out;
+        
+        
+    }
+};
+
+
+
+// LEETCODE SOLUTIOon !!!!!!!!!!!!!
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> m(nums1.begin(), nums1.end());
+        vector<int> res;
+        for (auto a : nums2)
+            if (m.count(a)) {
+                res.push_back(a);
+                m.erase(a);
+            }
+        return res;
+    }
+};
