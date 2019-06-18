@@ -1,0 +1,59 @@
+/*
+Convert a BST to a sorted circular doubly-linked list in-place.
+Think of the left and right pointers as synonymous to the previous and next pointers in a doubly-linked list.
+*/
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+
+    Node() {}
+
+    Node(int _val, Node* _left, Node* _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+public:
+    Node * head=NULL;
+    Node * tail=NULL;
+    void insert(int val){
+        Node * temp= new Node(val,NULL,NULL);
+        if(head==NULL)
+        { 
+            head = temp;
+            tail = temp;
+        }
+        else
+        {
+            tail->right = temp;
+            temp->left = tail;
+            tail = temp;
+        }
+    }
+    void inOrder(Node* root){
+        if (root->left!=NULL)
+            inOrder(root->left);
+        insert(root->val);
+        if (root->right!=NULL)
+            inOrder(root->right);
+      
+    }
+    
+    Node* treeToDoublyList(Node* root) {
+        if (!root) 
+            return NULL;
+        else 
+            inOrder(root);
+        tail->right = head;
+        head->left  = tail;
+        
+        return head;
+    }
+};
