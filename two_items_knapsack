@@ -1,0 +1,101 @@
+/*
+
+Monica wants to buy a keyboard and a USB drive from her favorite electronics store. 
+The store has several models of each. Monica wants to spend as much as possible for the 2 items, given her budget.
+
+Given the price lists for the store's keyboards and USB drives, and Monica's budget, find and print the amount of
+money Monica will spend. If she doesn't have enough money to both a keyboard and a USB drive, print -1 instead.
+She will buy only the two required items.
+
+Print a single integer denoting the amount of money Monica will spend. If she doesn't have enough money to buy one keyboard and one USB drive, print -1 instead.
+
+Sample Input 0
+
+10 2 3
+3 1
+5 2 8
+Sample Output 0
+
+9
+Explanation 0
+
+She can buy the 2nd keyboard and the  3rd USB drive for a total cost of 1+8=9.
+
+Sample Input 1
+
+5 1 1
+4
+5
+Sample Output 1
+
+-1
+Explanation 1
+
+There is no way to buy one keyboard and one USB drive because , so we print .
+
+*/
+
+
+#include "pch.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+int getMoneySpent(vector<int> keyboards, vector<int> drives, int b) {
+	/*
+	 * Write your code here.
+	 */
+	int res = -1;
+	vector<int>::iterator it;
+	sort(keyboards.begin(), keyboards.end());
+	/*cout << keyboards.size() << endl;
+	it = lower_bound(keyboards.begin(), keyboards.end(), b);
+	if (*it != 0)
+	{
+
+		size_t const dist = it - drives.begin();
+		vector<int> keyboards1(keyboards.begin(), keyboards.begin() + dist);
+		keyboards.clear();
+		copy(keyboards1.begin(), keyboards1.end(), back_inserter(keyboards));
+	}
+	cout << keyboards.size() << endl;
+	sort(drives.begin(), drives.end());
+	it = lower_bound(drives.begin(), drives.end(), b);
+	if (*it != 0)
+	{
+		size_t const dista = it - drives.begin();
+		vector<int> drives1(drives.begin(), drives.begin() + dista);
+		// drives(drives1.begin(),drives1.end(), back_inserter(drives1));
+		drives.clear();
+		// drives(drives1);
+		copy(drives1.begin(), drives1.end(), back_inserter(drives));
+
+	}
+	*/
+	for (int i = keyboards.size() - 1; i < keyboards.size(); i--)
+	{
+		it = upper_bound(drives.begin(), drives.end(), b - keyboards[i]);
+		cout << *it << endl;
+		if (it == drives.begin() && *it == b - keyboards[i])
+			return b;
+		else if (it != drives.begin())
+			res = max(res, *(it - 1) + keyboards[i]);
+
+	}
+	cout << res << endl;
+	return res;
+}
+
+
+
+int main()
+{
+	vector<int> keyboards = {4, 6, 8};
+	vector<int> drives= { 4, 3, 8 };
+	int b = 7;
+	getMoneySpent(keyboards, drives, b);
+
+return 0;
+}
