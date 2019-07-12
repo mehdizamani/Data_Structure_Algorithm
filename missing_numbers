@@ -1,0 +1,40 @@
+Output the missing numbers in ascending order.
+
+Sample Input
+
+10
+203 204 205 206 207 208 203 204 205 206
+13
+203 204 204 205 206 207 205 208 203 206 205 206 204
+Sample Output
+
+204 205 206
+Explanation
+
+204 is present in both arrays. Its frequency in arr is 2 , while its frequency in brr is 3. 
+Similarly, 205  and 206 occur twice in arr , but three times in brr. The rest of the numbers have the same frequencies in both lists.
+ 
+
+
+// Complete the missingNumbers function below.
+vector<int> missingNumbers(vector<int> arr, vector<int> brr) {
+    vector<int> out;
+    map<int,int> marr;
+    map<int, int> mbrr;
+    for (int i=0;i<arr.size();i++)
+        marr[arr[i]]++;
+    
+    for (int i=0;i<brr.size();i++)
+        mbrr[brr[i]]++;
+    
+    for (int i=0;i<brr.size();i++)
+    {
+        if ( find(out.begin(),out.end(),brr[i])==out.end() && 
+          ((marr.find(brr[i])==marr.end() ) ||  
+          ( marr.find(brr[i])!=marr.end() &&mbrr[brr[i]] != marr.find(brr[i])->second ) )
+         )
+            out.push_back(brr[i]);
+    }
+    sort(out.begin(),out.end());
+    return out;    
+}
