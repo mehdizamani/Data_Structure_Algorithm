@@ -1,0 +1,61 @@
+input:
+148 3
+Sample Output 0
+3
+Explanation 0
+
+super_digit(P) = super_digit(148148148) 
+               = super_digit(1+4+8+1+4+8+1+4+8)
+               = super_digit(39)
+               = super_digit(3+9)
+               = super_digit(12)
+               = super_digit(1+2)
+               = super_digit(3)
+               = 3
+
+Sample Input 1
+
+9875 4
+Sample Output 1
+8
+
+Sample Input 2
+
+123 3
+Sample Output 2
+
+9
+
+
+
+int suprerDig(int s)
+{
+    if( int(s/10) == 0)
+        return s;
+    int temp=0;
+    while (int(s/10) > 0)
+    {
+        temp+=(s%10);
+        s = (int) s/10;
+    }
+    temp+=s;
+    return suprerDig(temp);
+}
+// Complete the superDigit function below.
+int superDigit(string n, int k) {
+    string str;
+    stringstream ss;
+    int sum=0;
+    for (int i=0;i<n.length();i++)
+    {
+        ss<<n[i];
+        sum+= stoi(ss.str()) %10;
+        ss.clear();  // we should clean the ss buffer. o.w problem may happen for big ns.
+        ss.str(std::string()); // in order to clear the buffer, this line is also neccesary
+        
+    }
+    while(k%10 ==0) // in case k=10000, no need to multiply it!!
+        k=(int)k/10;
+    
+    return suprerDig(sum*k);
+}
