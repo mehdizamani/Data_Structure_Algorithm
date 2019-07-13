@@ -11,6 +11,7 @@ Note: If the list is empty,  will be null.
 bool has_cycle(SinglyLinkedListNode* head) {
     if (head==NULL)
         return false;
+     int slo_cnt=0;
     SinglyLinkedListNode* bck=head;
     SinglyLinkedListNode* bck2=head;
     while(bck2->next!=NULL)
