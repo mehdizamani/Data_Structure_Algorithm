@@ -1,0 +1,29 @@
+A linked list is said to contain a cycle if any node is visited more than once while traversing the list.
+
+Complete the function provided for you in your editor. It has one parameter: a pointer to a Node object named  that points to the head of a linked list. Your function must return a boolean denoting whether or not there is a cycle in the list. If there is a cycle, return true; otherwise, return false.
+
+Note: If the list is empty,  will be null.
+
+
+
+
+
+bool has_cycle(SinglyLinkedListNode* head) {
+    if (head==NULL)
+        return false;
+    SinglyLinkedListNode* bck=head;
+    SinglyLinkedListNode* bck2=head;
+    while(bck2->next!=NULL)
+    {
+        bck=bck->next;
+        bck2=bck2->next;
+        slo_cnt++;
+        if( bck2->next != NULL)
+            bck2=bck2->next;
+
+        if (bck2==bck && slo_cnt!=1)
+            return true;
+    }
+    return false;
+
+}
