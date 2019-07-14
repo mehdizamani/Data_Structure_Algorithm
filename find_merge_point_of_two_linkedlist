@@ -1,0 +1,42 @@
+Given pointers to the head nodes of  linked lists that merge together at some point, find the Node where the two lists merge. It is guaranteed that the two head Nodes will be different, and neither will be NULL.
+
+In the diagram below, the two lists converge at Node x:
+
+[List #1] a--->b--->c
+                     \
+                      x--->y--->z--->NULL
+                     /
+     [List #2] p--->q
+Complete the int findMergeNode(SinglyLinkedListNode* head1, SinglyLinkedListNode* head2) method so that it finds and returns the data value of the Node where the two lists merge.
+
+
+
+// Complete the findMergeNode function below.
+
+/*
+ * For your reference:
+ *
+ * SinglyLinkedListNode {
+ *     int data;
+ *     SinglyLinkedListNode* next;
+ * };
+ *
+ */
+int findMergeNode(SinglyLinkedListNode* head1, SinglyLinkedListNode* head2) {
+    SinglyLinkedListNode* A=head1;
+    SinglyLinkedListNode* B=head2;
+    while (A!=B)
+    {
+        if (A->next) // if A->next != NULL
+            A=A->next;
+        else
+            A=head2;
+        
+        if (B->next) // if A->next != NULL
+            B=B->next;
+        else
+            B=head1;
+    }
+    return B->data;
+
+}
