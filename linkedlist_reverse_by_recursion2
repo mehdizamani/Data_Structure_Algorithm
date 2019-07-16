@@ -1,0 +1,15 @@
+void reverseRec(SinglyLinkedListNode**head,SinglyLinkedListNode* node){
+    if (node->next==NULL)
+    {
+        *head=node;
+        return;
+    }
+    reverseRec(head, node->next);
+    node->next->next =node;
+    node->next=NULL;
+ }
+SinglyLinkedListNode* reverse(SinglyLinkedListNode* head) {
+    reverseRec(&head,head);
+    return head;
+
+}
