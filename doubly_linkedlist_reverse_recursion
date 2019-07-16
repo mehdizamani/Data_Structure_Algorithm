@@ -1,0 +1,20 @@
+
+ void reverseRec(DoublyLinkedListNode** head,DoublyLinkedListNode*node) 
+ {
+     if(node->next==NULL)
+     {
+          node->next=node->prev;
+          node->prev=NULL;
+         *head=node;
+         return;
+     }
+
+    reverseRec(head,node->next);
+    node->next->next=node;
+    node->prev=node->next;
+    node->next=NULL;
+ }
+DoublyLinkedListNode* reverse(DoublyLinkedListNode* head) {
+    reverseRec(&head, head);
+    return head;
+}
