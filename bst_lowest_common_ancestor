@@ -1,0 +1,44 @@
+
+// MY Solution
+/*
+void search(vector<Node*> &s,Node *root,int v1)
+  {
+      if (root==NULL)
+            return;
+        s.push_back(root);
+        if(v1<=root->data)
+        {
+            search(s,root->left,v1);
+        } else if (v1>root->data)
+        {
+            search(s,root->right,v1);
+        }
+  }
+    Node *lca(Node *root, int v1,int v2) {
+		// Write your code here.
+        vector<Node*> s1;
+        vector<Node*> s2;
+        search(s1,root,v1);
+        search(s2,root,v2);
+       
+       for (int i=s2.size()-1;i>=0;i--)
+         for (int j=s1.size()-1;j>=0;j--)
+            {
+                if (s1[j]->data==s2[i]->data)
+                    return s2[j];
+            }
+        return root;
+    }
+   */
+
+
+
+/// BEST SOLUTION
+Node *lca(Node *root, int v1,int v2) {
+    // Write your code here.
+    if(v1<root->data && v2<root->data)
+        root=lca(root->left,v1,v2);
+    else if(v1>root->data && v2>root->data)
+        root=lca(root->right,v1,v2);
+return root;
+}
