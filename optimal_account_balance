@@ -56,7 +56,7 @@ int main()
 
 
 
-*/ LEETCODE SOLUTIONS:
+*/ LEETCODE SOLUTIONS 1 :
 
 public:
     int minTransfers(vector<vector<int>>& trans) {
@@ -79,3 +79,51 @@ private:
     vector<long> debt; // all non-zero balances 
     
     */
+
+
+
+*/ LEETCODE SOLUTIONS 2:
+
+int dfs(vector<int>& lders, vector<int>&bwers, int m, int n)
+	{
+		if (m == lders.size()) return 0;
+		if (m == lders.size() - 1) return bwers.size() - n;
+		if (n == bwers.size() - 1) return lders.size() - m;
+		int minVal = INT_MAX;
+		for (int i = m; i < lders.size(); i++)
+		{
+		        if (lders[i] == bwers[n])
+				return 1 + dfs(lders, bwers, m+1, n + 1);
+		    
+			if (lders[i] > bwers[n])
+			{
+				lders[i] -= bwers[n];
+				minVal = min(minVal, 1 + dfs(lders, bwers, m, n + 1));
+				lders[i] += bwers[n];
+			}
+			else
+			{
+				bwers[n] -= lders[i];
+				minVal = min(minVal, 1 + dfs(lders, bwers, m + 1, n));
+				bwers[n] += lders[i];
+			}
+		}
+		return minVal;
+	}
+
+	int minTransfers(vector<vector<int>>& transactions) {
+		unordered_map<int, int> gaps;
+		for (auto& tr : transactions)
+		{
+			gaps[tr[0]] -= tr[2]; 
+			gaps[tr[1]] += tr[2];
+		}
+		
+		vector<int> lenders, borrowers;
+		for (auto& pr : gaps)
+			if (pr.second < 0)
+				lenders.push_back(-pr.second);
+			else if (pr.second > 0)
+				borrowers.push_back(pr.second);
+		return dfs(lenders, borrowers, 0, 0);
+	}
