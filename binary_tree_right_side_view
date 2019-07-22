@@ -1,0 +1,59 @@
+Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Example:
+
+Input: [1,2,3,null,5,null,4]
+Output: [1, 3, 4]
+Explanation:
+
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+  
+  
+  
+  /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+   int mostRight(deque<TreeNode*>& temp){
+        int cnt=0;
+        deque<TreeNode*> cpy;
+        int output=temp.front()->val;
+        while(!temp.empty())
+        {
+            TreeNode* tn=temp.back();
+            if (tn->left!=NULL){cout<<(tn->left->val )<<endl;
+                cpy.push_front(tn->left);}
+            if (tn->right!=NULL){cout<<(tn->right->val)<<endl;
+                cpy.push_front(tn->right);}
+            temp.pop_back();
+        }
+        temp=cpy;
+        return output;
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        if (root==NULL)
+            return {};
+        deque<TreeNode*> nodesInLevel;
+        vector<int> res;
+        nodesInLevel.push_front(root);
+        while(!nodesInLevel.empty())
+        {
+            res.push_back(mostRight(nodesInLevel));
+        }
+        return res;
+        //for(auto i:res)
+          //  cout<<i<<" " ;
+        
+    }
+};
