@@ -1,0 +1,40 @@
+
+
+Given a list of words and two words word1 and word2, return the shortest distance between these two words in the list.
+
+Example:
+Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+Input: word1 = “coding”, word2 = “practice”
+Output: 3
+Input: word1 = "makes", word2 = "coding"
+Output: 1
+
+// MY SOLUTION
+class Solution {
+public:
+    int shortestDistance(vector<string>& words, string word1, string word2) {
+        unordered_map<string, vector<int>> m;
+        for (int i=0;i<words.size();i++)
+        {
+            m[words[i]].push_back(i);
+        }
+        vector<int> word1vec=m.find(word1)->second;
+        vector<int> word2vec=m.find(word2)->second;
+        int maxx=INT_MAX;
+        for (int i:word1vec)
+            for (int j:word2vec)
+                maxx=min(abs(i-j),maxx);
+        return maxx;
+    }
+};
+
+// LEETCODE 
+int shortestDistance(vector<string>& ws, string w1, string w2, int min_d = INT_MAX) {
+  for (int i = 0, i1 = ws.size(), i2 = -ws.size(); i < ws.size(); ++i) {
+    if (ws[i] == w1) i1 = i;
+    if (ws[i] == w2) i2 = i;
+    min_d = min(min_d, abs(i1 - i2));
+  }
+  return min_d;
+}
