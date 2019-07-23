@@ -20,7 +20,7 @@ Note:
 A is sorted in non-decreasing order.
 
 
-
+// LEETCODE
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& A) {
@@ -44,5 +44,64 @@ public:
         }
         reverse(ret.begin(),ret.end());
         return ret;
+    }
+};
+
+
+
+// MY CODE !!!
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        vector<int> out=A;
+        deque<int> neg;
+        vector<int> pos;
+        int i=0;
+        while(A[i]<=0)
+        {
+            neg.push_front(A[i]*A[i]);
+            i++;
+        }
+        while(i<A.size())
+        {
+            pos.push_back(A[i]*A[i]);
+            i++;
+        }
+        int negCntr=0;
+        int posCntr=0;
+        int mainCntr=0;
+        while(mainCntr<A.size()&&posCntr<pos.size()&&negCntr<neg.size())
+        {
+            if(pos[posCntr] < neg[negCntr])
+            {
+                out[mainCntr]=pos[posCntr];
+                posCntr++;
+            }
+            else    
+            {
+                out[mainCntr]=neg[negCntr];
+                negCntr++;
+            }
+            mainCntr++;
+        }
+        if(posCntr<pos.size())
+        {
+            while(mainCntr<A.size())
+            {
+                out[mainCntr]=pos[posCntr];
+                mainCntr++;
+                posCntr++;
+            }
+        }
+        if(negCntr<neg.size())
+        {
+               while(mainCntr<A.size())
+            {
+                out[mainCntr]=neg[negCntr];
+                mainCntr++;
+                negCntr++;
+            }
+        }
+        return out;
     }
 };
