@@ -1,0 +1,117 @@
+
+
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+ 
+
+But the following [1,2,2,null,3,null,3] is not:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+ 
+ 
+ 
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+ 
+  /// APPROACH 1 TRAVESE
+ class Solution {
+public:
+   
+    bool isSymmetric(TreeNode* root) {
+        if(!root)
+            return true;
+        deque<TreeNode*> dq;
+        if (root->left) dq.push_front(root->left);
+        if (root->right) dq.push_back(root->right);
+        while(!dq.empty())
+        {
+            if (dq.size()&1)
+                return false;
+            TreeNode* temp1 = dq.front();
+            TreeNode* temp2 = dq.back();
+            if ( (temp1 && !temp2) || (!temp1 && temp2)|| (temp1->val != temp2->val) )
+                return false;
+            dq.pop_front();
+            if (temp1->right) dq.push_front(temp1->right);
+            if (temp1->left)  dq.push_front(temp1->left);
+            dq.pop_back();
+            if (temp2->left)  dq.push_back(temp2->left);
+            if (temp2->right) dq.push_back(temp2->right);
+            
+            if ((!temp1->left && !temp2->left && (temp1->right || temp2->right)) || 
+                (!temp1->right && !temp2->right && (temp1->left || temp2->left)) )
+                return false;
+            //cout<<temp1->val<<endl;
+            //cout<<temp2->val<<endl;
+            //if ((temp1 && !temp2) || (!temp1 && temp2)
+            //   || (temp1->val != temp2->val))
+            //   return false;
+            //dq.push_back(temp2->left);
+            //dq.push_back(temp2->right);
+            //dq.pop_front();
+        }
+        return true;
+    }
+};
+
+
+
+///////////////////////////////////////
+   // RECURSIVE APPROACH
+  
+class Solution {
+public:
+    bool isSymRec(TreeNode * l, TreeNode* r)
+    {
+        // Leetcode
+        if( !l && !r ) return true;
+        if( (l && !r) || (!l && r) ) return false;
+        return ( (l->val == r->val) && isSymRec( l->left , r->right) && 
+            isSymRec( l->right , r->left)); 
+        /* MY PRIGINAL THOUGHT
+        if(!l && !r)  return true;
+        if((l && r) && (l->val != r->val))  return false;
+        if( (l->left && !r->right) || (!l->right && r->left) ||
+            (!l->left && r->right) || (l->right && !r->left)) 
+           return false;
+        if (l->left && r->right)
+           return isSymRec(l->left , r->right);
+        if (l->right && r->left)
+           return isSymRec(l->right , r->left);
+        return true;
+          */ 
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(!root)
+            return true;
+        /*  MY PRIGINAL THOUGHT
+        if (root->left && root->right )
+            return isSymRec(root->left , root->right);
+        else if ( (root->left && !root->right ) || (!root->left && root->right ) )
+            return false;
+        else if (!root->left && !root->right )
+            return true;
+        return false;
+        */
+    }
+};
