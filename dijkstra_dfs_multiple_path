@@ -1,0 +1,124 @@
+FIND ALL SHORTEST PATHs from origin to destination
+
+// dijkstras.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+//#include <math>
+#define V 9
+using namespace std;
+int minVertexAround(bool visited[], int dist[])
+{
+	int minn = INT_MAX, minInd = 0;
+	for (int i = 0; i < V; i++)
+		if (visited[i] == false && minn >= dist[i])
+			minInd = i, minn = dist[i];
+	return minInd;
+
+}
+
+void printSolution(int dist[], int n)
+{
+	printf("Vertex   Distance from Source\n");
+	for (int i = 0; i < V; i++)
+		printf("%d tt %d\n", i, dist[i]);
+}
+bool isNotVisited(int val, vector<int> path)
+{
+	for (auto i : path)
+		if (i == val)
+			return false;
+	return true;
+}
+
+std::vector<int> all_shortest_path(int graph[V][V], int dist[V], int shortest, int st)
+{
+	queue<vector<int>> q;
+	vector<int> path;
+	vector<int> out(V, 0);
+	//cout << graph[0][1] << endl;
+	//cout << dist[V - 1] << endl;
+	path.push_back(st);
+	q.push(path);
+	while (!q.empty())
+	{
+		path = q.front();
+		q.pop();
+		int last = path[path.size() - 1];
+		if (dist[last] > shortest)
+			continue;
+		if (last == V - 1 && dist[last] == shortest)
+		{
+			cout << dist[last] << endl;
+			for (int i = 0; i < path.size(); i++)
+				out[path[i]] = 1;
+			cout << " GOT IT" << endl;
+			continue;
+		}
+
+		//cout << last << " " << path[0] << endl;
+		for (int i = 0; i < V; i++)
+		{
+			if (graph[last][i] > 0 && isNotVisited(i, path))
+			{
+				vector<int> newPath(path);
+				newPath.push_back(i);
+				q.push(newPath);
+			}
+		}
+
+	}
+
+
+
+	return out;
+}
+vector<int>  dijkstra(int graph[V][V], int st)
+{
+	bool visited[V];
+	int dist[V];
+	for (int i = 0; i < V; i++)
+		visited[i] = false, dist[i] = INT_MAX;
+	dist[st] = 0;
+	//visited[st] = true;
+	int attempt = minVertexAround(visited, dist);
+	for (int count = 0; count < V - 1; count++)
+	{
+
+		int attempt = minVertexAround(visited, dist);
+		visited[attempt] = true;
+		for (int i = 0; i < V; i++)
+			if (!visited[i] && graph[attempt][i] > 0 && dist[attempt] != INT_MAX
+				&& dist[i] > dist[attempt] + graph[attempt][i])
+				dist[i] = dist[attempt] + graph[attempt][i];
+	}
+	std::cout << dist[V - 1] << std::endl;
+	vector<int> out =all_shortest_path(graph, dist, dist[V - 1], st);
+	for (auto i : out)
+		cout << dist[i] << endl;
+	return out;
+	//printSolution(dist, V);
+}
+
+
+
+int main()
+{
+	int graph[V][V] = { {0, 4, 0, 0, 0, 0, 0, 8, 5},
+					 {4, 0, 8, 0, 0, 0, 0, 11, 1},
+					 {0, 8, 0, 7, 0, 4, 0, 0, 2},
+					 {0, 0, 7, 0, 9, 14, 0, 0, 0},
+					 {0, 0, 0, 9, 0, 10, 0, 0, 0},
+					 {0, 0, 4, 14, 10, 0, 2, 0, 0},
+					 {0, 0, 0, 0, 0, 2, 0, 1, 6},
+					 {1, 11, 0, 0, 0, 0, 1, 0, 7},
+					 {5, 0, 2, 0, 0, 0, 6, 7, 0}
+	};
+
+	dijkstra(graph, 0);
+	std::cout << "Hello World!\n";
+}
