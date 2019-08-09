@@ -1,0 +1,58 @@
+Given two strings s and t, determine if they are isomorphic.
+
+Two strings are isomorphic if the characters in s can be replaced to get t.
+
+All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character but a character may map to itself.
+
+Example 1:
+
+Input: s = "egg", t = "add"
+Output: true
+Example 2:
+
+Input: s = "foo", t = "bar"
+Output: false
+Example 3:
+
+Input: s = "paper", t = "title"
+Output: true
+
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        //  APPROACH 0  87% speed and 92% space
+        int s1[256] = {0};
+        int s2[256] = {0};
+        for (int i = 0 ; i < s.length(); i++)
+        {
+            s1[int (s[i])] += i + 1;
+            s2[int (t[i])] += i + 1;         
+            if (s1[int (s[i])] > 0 &&  s1[int (s[i])] != s2[int (t[i])])
+                return false;
+        }
+        if (accumulate (s1 , s1 + 255 , 0) != accumulate (s2 , s2 + 255 , 0))
+            return false;
+        return true;
+        
+        // APPROACH 1 7% speed and 80% space
+        /*
+        map<int,char> m1;
+        map<int,char> m2;
+        for(int i = 0 ; i < s.length() ; i++)
+        {
+            if ((m1.find(s[i]) == m1.end() && m2.find(t[i]) != m2.end() ) ||
+                (m1.find(s[i]) != m1.end() && m2.find(t[i]) == m2.end() ) )
+            return false;
+            if(m1.find(s[i]) == m1.end())
+                m1[s[i]] = i;
+            if(m2.find(t[i]) == m2.end())
+                m2[t[i]] = i;
+            
+            if(m1.find(s[i]) != m1.end() && m2.find(t[i]) != m2.end() )
+                if (m1[s[i]] != m2[t[i]])
+                    return false;
+        }
+        return true;
+        */
+    }
+};
