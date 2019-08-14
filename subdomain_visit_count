@@ -1,0 +1,62 @@
+class Solution {
+public:
+    
+ // LEETCOD FAST 70% and 87%   
+vector<string> subdomainVisits(vector<string>& cpdomains) 
+{    
+    unordered_map<string, int> m; 
+
+    for (const auto& word : cpdomains) 
+    {
+        int i    = word.find (" "); 
+        int n    = stoi (word.substr (0, i)); 
+        string s = word.substr (i+1, word.size ()-i-1);
+
+        for (int i = s.size ()-1; i >= 0; i--) {
+            if (s[i] == '.') m[s.substr (i+1, s.size ()-i-1)] += n; 
+            else if (i == 0) m[s.substr (i,   s.size ()-i)  ] += n;
+        }
+    }
+
+    vector<string> v;
+    for (const auto& e : m) v.push_back (to_string (e.second) + " " + e.first);
+    return v;
+}
+    ///////////
+    /*
+    // MY APPROACH apeed 34% and space 20%
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        map<string , int> m;
+        for(auto dm : cpdomains)
+        {
+            int cntr = 0;
+            string st;
+            while(dm[cntr] != ' ')
+                st+=dm[cntr++];
+            int num = atoi(st.c_str());
+            st = dm.substr(cntr + 1);
+            m[st] += num;
+            st = "";
+            while(cntr < dm.length() - 1)
+            {
+                cntr ++;
+                if(dm[cntr] == '.')
+                {
+                    st = dm.substr(cntr + 1);
+                    m[st] += num;
+                    st = "";
+                }
+            }
+        }
+        vector<string> out;
+        for(auto mem : m)
+        {
+            stringstream ss;
+            ss<< mem.second << " " << mem.first;
+            out.emplace_back( ss.str() );
+        }
+        return out;
+    }
+    */
+};
+
