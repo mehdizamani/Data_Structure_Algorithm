@@ -27,4 +27,20 @@ bool has_cycle(SinglyLinkedListNode* head) {
     }
     return false;
 
+     //// SECOND APPROACH USING SET
+        /*
+        unordered_set<Song*> s;
+        s.insert(this);
+        Song * temp = this;
+        while(temp->nextSong)
+        {
+            if(s.find(temp->nextSong) != s.end())
+                return true;
+            else
+                s.insert(temp->nextSong);
+            temp = temp->nextSong;
+        }
+        return false;
+        */
+
 }
