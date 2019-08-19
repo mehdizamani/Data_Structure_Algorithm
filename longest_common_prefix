@@ -52,3 +52,37 @@ int main()
 	cout<< sol.longestCommonPrefix(inp);
 
 }
+
+
+
+
+///////////// RECURSIVE  95% speed and 5% space
+class Solution {
+public:
+    string combine(string left, string right)
+    {
+        int size = max (left.length() , right.length());
+        string out;
+        for (int i = 0; i < size; i++)
+        {
+            if(left[i] == right[i])
+                out += left[i];
+            else 
+                return out;
+        }
+        return out;
+    }
+    string Rec(vector<string>& strs,int begin, int end){
+        if(begin == end)
+            return strs[begin];
+        string left = Rec(strs, begin, (begin + end) /2 );
+        string right= Rec(strs, (begin + end) /2  + 1 , end);
+        return combine(left, right);
+    }
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size() == 0)
+            return "";
+        return Rec(strs,0,strs.size() - 1);
+    }
+};
+//["flower","flow","flight"]
