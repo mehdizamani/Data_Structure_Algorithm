@@ -1,0 +1,114 @@
+Given two binary strings, return their sum (also a binary string).
+
+The input strings are both non-empty and contains only characters 1 or 0.
+
+Example 1:
+
+Input: a = "11", b = "1"
+Output: "100"
+Example 2:
+
+Input: a = "1010", b = "1011"
+Output: "10101"
+
+
+
+class Solution {
+public:
+    /* MY WRONG ANSWER
+    void push_toit(stack<int> &stt, int b, int a , int &tempp)    
+    {
+        
+        if (b + a + tempp == 3)
+            {
+                tempp = 1;
+                stt.push(1);
+            }
+            else if (b + a + tempp == 2)
+            {
+                tempp = 1;
+                 stt.push(0);
+            }
+            else (if (b + a + tempp == 1)
+            {
+                tempp = 0;
+                stt.push(1);
+            }
+            else if (b + a + tempp == 0)
+            {
+                tempp = 0;
+                stt.push(0);
+            }
+            
+    }
+                   
+    string addBinary(string a, string b) {
+        
+        int bcntr = b.length() - 1;
+        int acntr = a.length() - 1;
+        int temp = 0;
+        string out;
+        stack<int> st;
+        while(bcntr >= 0 && acntr >= 0)
+        {   
+           // push_toit(st, b[bcntr] ,  a[acntr] , temp);
+            bcntr -- ;
+            acntr -- ;
+        }
+        while(bcntr == 0)
+       {
+          //  push_toit(st, b[bcntr] , 0 , temp);
+            bcntr --;
+       }
+        
+        while(acntr == 0)
+       {
+          //  push_toit(st,0 ,  a[acntr]  , temp);
+            acntr --;
+       }
+        while(!st.empty())
+        {
+            out += st.top();
+            st.pop();
+        }
+        return out;
+        
+        return "9";
+    }
+                  
+                  
+        */          
+                        
+    string addBinary(string a, string b) {
+        if(a.length() < b.length())
+            swap(a,b);
+        int bigCntr = a.length() ;
+        int smalCntr = b.length() ;
+        while(--bigCntr > 0)
+        {
+            if (smalCntr)
+                a[bigCntr] += b[--smalCntr] & 1; // TRICKY!!!!!!!!!
+            if (a[bigCntr] > '1')
+            {
+                a[bigCntr] -= 2; 
+                if(bigCntr)
+                    a[bigCntr - 1] ++;
+                else 
+                   a = '1' + a;
+            }
+        }
+         if (smalCntr)  // TRICKY!!!!!!!!!
+                a[bigCntr] += b[--smalCntr] & 1; 
+           
+        if (a[0] > '1')
+        {
+            a[0] -= 2;
+            a = '1' + a;
+        }
+     return a;
+        //'11'
+            //'1'
+        
+    }
+        
+};
