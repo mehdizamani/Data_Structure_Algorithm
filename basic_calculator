@@ -1,0 +1,99 @@
+Implement a basic calculator to evaluate a simple expression string.
+
+The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . 
+The integer division should truncate toward zero.
+
+Example 1:
+
+Input: "3+2*2"
+Output: 7
+Example 2:
+
+Input: " 3/2 "
+Output: 1
+Example 3:
+
+Input: " 3+5 / 2 "
+Output: 5
+
+
+
+
+
+
+THOUGHT
+
+I used a variable 'interim' to calculate interim result. interim result are separated by either '-' or '+'. 
+For example, "1 +2 * 4-5/3", there will be three interims: (+)1, (+)2 * 4, (-)5/3.
+
+Here is the process, each time, we read a character:
+
+If it's a digit, we continue reading until a non-digit appears, we record the number as "num". 
+Then we check the operator before this num as to update the current interim result. Note that,
+there is no operator before the first number in expressions, so op is initialized to be '+'. 
+Also note that, when a '+' or '-' appears, it means the end of current interim calculation,
+which should be added to the final answer, and then we reset interim for the next 'interim calculation'.
+
+If it's ' ', we skip;
+
+PROCESS
+
+To walk you though using an example, in "1 + 2*4 - 5/3":
+
+BEG
+
+op is set to be '+'
+when we read '1', we check the operator before 1, it's '+', so first interim is 1, and "ans = 1";
+when we read '+', op is set to be '+'
+when we read 2, because the operator before 2 is '+', so 2 is the beginning number of the new interim, so we set interim = (+) 2;
+when we read *, op is set to be *
+when we read 4, interim = (+) 2*4
+when we read '-', op is set to be '-'
+when we read 5, we check the operator before 5 is '-' which indicates the end of current interim, so we update final answer, ans = 1 + 2*4, and interim is reset to be (-) 5;
+when we read '/', op is set to be '/'
+when we read '3', because the operator before 3 is '/', update interim = (-5) / 3.
+When we finished reading everything, add the last interim to final answer: ans = 1 + 2*4 + (-5)/3
+END
+
+
+
+
+
+class Solution {
+public:
+    int calculate(string s) {
+        int i = 0;
+        char op ='+';
+        int interim = 0;
+        int ans = 0;
+        while(i<s.length())
+        {
+            if(isdigit(s[i]))
+            {
+                long num = 0;
+                while(i<s.length() && isdigit(s[i]))
+                {
+                    num = num * 10 + s[i] - '0';
+                    i++;
+                }
+                if(op == '+' || op == '-')
+                {
+                    ans += interim;
+                    interim = ( (op == '-')? -1*num : num);
+                }else if (op == '*')
+                {
+                    interim *= num;
+                }else if (op == '/')
+                {
+                    interim /= num;
+                }
+                continue;
+                
+            }else if (s[i] != ' ')
+                op = s[i];
+            i++;
+        }
+        ans +=interim;
+        return ans;
+    }
+};
