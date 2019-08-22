@@ -1,0 +1,40 @@
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+ 
+ 
+class Solution {
+public:
+ //  this is a dfs search with speed 70% and space 92%
+    int maxx = 0;
+    int recDiam(TreeNode* root)//, int  maxOneSide, int  currentDiam)
+    {
+        if (!root)
+            return 0;
+        int left = recDiam(root->left) + 1;
+        int right = recDiam(root->right) + 1;
+        maxx = max( maxx, left + right - 2);
+       return max (left, right);
+        
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        int out = 0;
+        int depth = 0;
+        if (root)
+            depth = recDiam(root);//, depth , out);
+        else return 0;
+        cout<<depth<<endl;
+        return maxx;
+        
+    }
+};
