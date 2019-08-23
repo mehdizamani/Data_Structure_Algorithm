@@ -1,0 +1,37 @@
+
+
+Count the number of prime numbers less than a non-negative number, n.
+
+Example:
+
+Input: 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+
+
+
+class Solution {
+public:
+
+// speed 75% space %75
+    int countPrimes(int n) {
+        if (n <= 2)
+            return 0;
+        int maxx = sqrt(n);
+        int out = 1 ;
+        vector<bool> v(n , false);
+        for (int i = 3; i < n ; i +=2)
+        {
+            if(!v[i])
+            {
+                out++;
+                 if (i > maxx) // e.g if n=100 and we found 11, no need to explor 11*11
+                    continue;
+
+                for(long j = i*i ; j < n; j += i*2) // i*i i*i+i*2
+                    v[j] = true;
+            }
+                   }
+            return out;
+    }
+};
