@@ -9,7 +9,7 @@ Both num1 and num2 contains only digits 0-9.
 Both num1 and num2 does not contain any leading zero.
 You must not use any built-in BigInteger library or convert the inputs to integer directly.
 
-
+// LEETcode asnwer
 class Solution {
 public:
     string addStrings(string num1, string num2) {
@@ -23,3 +23,86 @@ public:
         return ans;
     }
 };
+
+
+///////////
+/// MY answere 15% speed and 5% space
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        if(num1.length() < num2.length())
+            swap(num1, num2);
+        int i = num1.length() - 1;
+        int j = num2.length() - 1;
+        int temp = 0;
+        string out;
+        while(i >= 0)
+        {
+            if(j >= 0)
+            {
+                int a = (int) (num1[i]) + (int) (num2[j]) - '0' - '0' + temp;   // important
+                out = to_string(a % 10) + out;  // important!!!
+                temp = a / 10;
+                j--;
+            }
+            else
+            {
+                int a = ( (int) (num1[i]) - '0' + temp);
+                out = to_string(a % 10) + out;
+                temp = a / 10;
+            }
+            i--;
+        }
+        if (temp > 0 && temp < 10)
+            out = to_string(temp) + out;
+        else if (temp >= 10)
+            out = to_string(temp/10)  + out;
+        return out;
+        /*
+        if( (num1.empty() && num2.empty() ) || (!num1.empty() && num2.empty() ) )
+            return num1;
+        if (num1.empty() && !num2.empty() ) 
+            return num2;
+        int temp = 0;
+        string out;
+        int n2 =num2.length() -1 ;
+        int n1 =num1.length() -1 ;
+        while(n1 >=0 && n2 >= 0)
+        {
+            char c = (char) ((num2[n2]  + num1[n1] + temp)%10) ;
+            
+            out = c + out;
+            cout<<out.c_str()<<endl;
+            if (num2[n2] + num1[n1] - '0' -'0'+ temp > 9)
+                temp = 1;
+            else temp = 0 ;
+            n1-- ; 
+            n2--;
+        }
+        if(n1 == 0)
+            while( n2 >= 0)
+            {
+                out = (char) ('0' + (num2[n2] + temp)%10 )+ out;
+                if (num2[n2] - '0' + temp > 9)
+                    temp = 1;
+                else temp = 0 ;
+                n2-- ; 
+            }
+        
+        if(n2 == 0)
+            while( n1 >= 0)
+            {
+                out = (char) ('0' + (num1[n1] + temp)%10 )+ out;
+                if (num1[n1] - '0' + temp > 9)
+                    temp = 1;
+                else temp = 0 ;
+                n1-- ; 
+            }   
+        cout<<"out"<<out.c_str()<<endl;
+        if (temp > 0)
+            out = (char) ( temp ) + out;
+        return out;
+        */
+    }
+};
+
