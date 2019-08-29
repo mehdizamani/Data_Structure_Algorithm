@@ -1,0 +1,56 @@
+Suppose you are at a party with n people (labeled from 0 to n - 1) and among them,
+there may exist one celebrity. The definition of a celebrity is that all the other 
+n - 1 people know him/her but he/she does not know any of them.
+
+Now you want to find out who the celebrity is or verify that there is not one.
+The only thing you are allowed to do is to ask questions like: "Hi, A. Do you know B?" 
+to get information of whether A knows B. You need to find out the celebrity (or verify
+there is not one) by asking as few questions as possible (in the asymptotic sense).
+
+You are given a helper function bool knows(a, b) which tells you whether A knows B.
+Implement a function int findCelebrity(n). There will be exactly one celebrity if he/she 
+is in the party. Return the celebrity's label if there is a celebrity in the party. 
+If there is no celebrity, return -1.
+
+
+// OPTIMAL !!!!! TRICKY!!! speed 94% space 95%
+int findCelebrity(int n, int i = 0) {
+  for (auto j = 1; j < n; ++j) if (knows(i, j)) i = j;
+  for (auto j = 0; j < i; ++j) if (knows(i, j)) return -1;
+  for (auto j = 0; j < n; ++j) if (i != j && !knows(j, i)) return -1;
+  return i;
+}
+
+
+// My approach speed 5%!!!!
+// Forward declaration of the knows API.
+bool knows(int a, int b);
+
+class Solution {
+public:
+    int findCelebrity(int n) {
+        vector<vector<int>> adj(n, vector<int>(n,0));
+        vector<int> cand;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n ; j++)
+            {
+                if(knows(j,i))
+                    adj[i][j] = 1;                    
+            }
+            int acc = accumulate(adj[i].begin(), adj[i].end(),0);
+            if (acc == n)
+                cand.emplace_back(i);
+            if (cand.size() > 1)
+                return -1;
+        }
+        if (cand.size() == 0)
+            return -1;
+        int sum = 0;
+        for(int i = 0; i < n; i++)
+            sum += adj[i][cand[0]];
+        if (sum == 1)
+            return cand[0];
+        return -1;
+    }
+};
