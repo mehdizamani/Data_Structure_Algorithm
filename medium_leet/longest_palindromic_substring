@@ -1,0 +1,34 @@
+class Solution {
+public:
+        // speed 56% and space 14%   O(n2)
+    string longestPalindrome(string s) {
+         int size = s.length();
+         int currentMax = 0;
+         int left = 0;
+         for (int i = 0; i < size; i++)
+         {
+             pair<int , int> d1 = SizeOfThisPal(s , i , i);   // to check ..x.. cases
+             pair<int , int> d2 = SizeOfThisPal(s , i , i + 1); // to check ..xx.. cases
+             int l = d1.first > d2.first ? d1.second : d2.second;
+             int cm = max(d1.first , d2.first);
+             if (cm > currentMax)
+             {
+                 left = l;
+                 currentMax = cm;
+             }
+         }
+         return s.substr(left, currentMax - 1);
+    }
+    
+    pair<int , int>  SizeOfThisPal(string s , int i , int j)
+    {
+        pair<int , int> p;
+        while(i >= 0 && j < s.length() && s[i] == s[j] )
+        {
+            i--;
+            j++;
+        }
+        p = make_pair(j - i , i + 1);
+        return p;
+    }    
+};
