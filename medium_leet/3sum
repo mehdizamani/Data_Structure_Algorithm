@@ -1,0 +1,114 @@
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Note:
+
+The solution set must not contain duplicate triplets.
+
+Example:
+
+Given array nums = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+
+
+class Solution {
+public:
+    // speed 70% space 50%
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        if (nums.size() < 3)
+            return {};
+         
+        vector<vector<int>> out;
+        sort(nums.begin(),nums.end());
+        if (nums[0] == 0 && nums[nums.size() - 1] == 0)
+        {
+            vector<int> temp(3,0);
+            out.emplace_back(temp);
+            return out;
+        }
+        int tempTarget = 0; 
+        for (int i = 0; i < nums.size() ; i++)
+        {
+            int target =  - nums[i];
+            if(target < 0 )
+                break;
+            if (target == tempTarget)
+                continue;
+            tempTarget = target; // to avoid replicat target to examine. e.g -1, -1, 0,  1
+            int leftInd = i + 1;
+            int rightInd = nums.size() - 1;
+            while( leftInd < rightInd)
+            {
+                int test = nums[leftInd] + nums[rightInd];
+                if (test > target)
+                {
+                    rightInd-- ; 
+                    continue;
+                } else if (test < target)
+                {
+                    leftInd++ ; 
+                    continue;
+                }else if (test == target)
+                {
+                    vector<int> temp(3,0);
+                    temp[0] = -target;
+                    temp[1] = nums[leftInd];
+                    temp[2] = nums[rightInd];
+                    out.emplace_back(temp);
+                    while( leftInd < nums.size() && temp[1] == nums[leftInd] ) { leftInd++ ; }
+                    while( rightInd >= 0 && temp[2] == nums[rightInd] ) { rightInd-- ; }
+             
+                }
+                
+            }
+        }
+        return out;
+        /* [0,-4,-1,-4,-2,-3,2]
+        auto it = lower_bound(nums.begin(), nums.end(), 0);
+        if(nums.begin() == it)
+        {
+           if(nums[2] == 0)
+               return {{0,0,0}};
+            else
+                return {};
+        }
+        unordered_map<int, int> m;
+        for (auto i: nums)
+            m[i]++ ;
+        for (auto i = nums.begin(); i < it ; i++)
+            for (auto j = i + 1; j < it ; j++)
+            {
+                auto index_in_map = m.find( -1 * ( ( *i ) + ( *j ) ));
+                if( index_in_map != m.end() )
+                {
+                    vector<int> temp;
+                    temp.reserve(3);
+                    temp.emplace_back(*i),
+                    temp.emplace_back(*j),
+                    temp.emplace_back(index_in_map->first);
+                    out.emplace_back(temp);
+                }
+            }
+         for (auto i = it; i != nums.end() ; i++)
+            for (auto j = i + 1; j  != nums.end() ; j++)
+            {
+                auto index_in_map = m.find( -1 * ( ( *i ) + ( *j ) ));
+                if( index_in_map != m.end() )
+                {
+                    vector<int> temp;
+                    temp.reserve(3);
+                    temp.emplace_back(index_in_map->first);
+                    temp.emplace_back(*i),
+                    temp.emplace_back(*j),
+                    out.emplace_back(temp); 
+                }
+            }
+            //[-1,0,1,0]
+        return out;
+        */
+    }
+};
