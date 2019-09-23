@@ -1,0 +1,79 @@
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+
+(i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+
+You may assume no duplicate exists in the array.
+
+Your algorithm's runtime complexity must be in the order of O(log n).
+
+Example 1:
+
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+Example 2:
+
+Input: nums = [4,5,6,7,0,1,2], target = 3
+Output: -1
+
+
+
+
+class Solution {
+public:
+    // speed 80% space 70%
+     int search(vector<int>& nums, int target) {
+         int size = nums.size();
+         if(size == 0)
+             return -1;
+         if(nums[0] <= nums[size - 1] && (target < nums[0] || target > nums[size - 1]))
+            return -1; 
+         return bfs(nums, 0, size - 1, target);
+     }
+    int bfs(const vector<int>& nums, int l, int r, int iTarget)
+    {
+        int out = -1;
+        while(r >= l)
+        {
+            if(nums[l] <= nums[r] && (iTarget < nums[l] || iTarget > nums[r]))
+                return -1; 
+            int m =  (l + r)>>1;
+            //cerr<<r <<endl;
+            
+            if( nums[m] == iTarget)
+            {
+                out = m ;
+                break;
+            }    
+            else if( nums[m] < iTarget)
+            {
+                if (nums[r] > nums[m])
+                {
+                    if(iTarget <= nums[r])
+                        l = m + 1;
+                    else
+                        r = m - 1;
+                }else
+                {
+                    l = m + 1;
+                }    
+            }
+            else if( nums[m] > iTarget)
+            {
+                if (nums[m] >= nums[l])
+                {
+                    if(iTarget >= nums[l])
+                        r = m - 1;
+                    else
+                        l = m + 1;
+                }else
+                {
+                    r = m - 1;
+                }  
+            }
+        }
+        return out;
+      }
+    
+};
