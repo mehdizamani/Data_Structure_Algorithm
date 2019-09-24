@@ -1,0 +1,67 @@
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
+Example 1:
+
+Input: [[0, 30],[5, 10],[15, 20]]
+Output: 2
+Example 2:
+
+Input: [[7,10],[2,4]]
+Output: 1
+
+
+class Solution {
+public:
+    // speed 45% and space 100%
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        if (intervals.size() <= 1)
+            return intervals.size();
+        sort(intervals.begin(), intervals.end());
+        int cntr = 0;
+        priority_queue<int, vector<int>, greater<int>> pq;
+        pq.push(intervals[0][1]);
+        for (int i = 1; i < intervals.size(); i++)
+        {
+            if(pq.top() <= intervals[i][0])
+            {
+                pq.pop();
+                pq.push(intervals[i][1]);
+            }else
+                pq.push(intervals[i][1]);
+        }
+        return pq.size();
+        
+        /* WRONG!
+        while(cntr < intervals.size())
+        {
+            int temp = cntr + 1;
+            int tempRoom = 1;
+            while(temp < intervals.size() && intervals[temp][1] < intervals[cntr][1])
+            {
+                if(temp == cntr + 1)
+                    tempRoom++ ;    
+                if(temp > cntr + 1 && intervals[temp - 1][1] > intervals[temp][0])
+                    tempRoom++ ;
+                temp++ ;
+            }
+            
+            output = max(output , tempRoom );
+            
+            if(temp > cntr + 1)
+            {
+                tempRoom = 1;
+                cntr = temp ;  
+                temp = cntr + 1; 
+            }
+            while(temp < intervals.size() && intervals[temp][0] < intervals[cntr][1])
+            {
+                tempRoom++ ;
+                temp++ ;
+            }
+            output = max(output , tempRoom );            
+            cntr = temp ;
+        }
+        return output;
+        */
+    }
+};
