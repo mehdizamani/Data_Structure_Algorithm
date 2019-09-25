@@ -1,0 +1,82 @@
+
+
+
+Given an array of strings, group anagrams together.
+
+Example:
+
+Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+Output:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        //  LEETCODE ANSWER 77% space 60%
+        vector<vector<string>> result;
+		unordered_map<string, vector<string>> hashmap;
+		for(const auto& i : strs){
+			string s = i;
+			sort(s.begin(), s.end());
+			hashmap[s].push_back(i);
+		}
+		for(const auto& i : hashmap){
+			vector<string> s = i.second;
+			sort(s.begin(), s.end());
+			result.push_back(s);
+		}
+		return result;
+        /* TIME EXCEED
+        vector<vector<string>> out;
+        unordered_map<int, int> visited;
+        unordered_map<char, int> temp;
+        int cntr = 0 ;
+        while(cntr < strs.size())
+        {
+            if(visited.find(cntr) == visited.end())
+            {
+                temp.clear();
+                for(auto i : strs[cntr])
+                    temp[i]++;
+                vector<string> tempStVec;
+                tempStVec.emplace_back(strs[cntr]);
+                for(int j = cntr + 1; j < strs.size() ; j++)
+                {
+                    if(visited.find(j) == visited.end())
+                    {
+                        if(strs[cntr].size() == strs[j].length())
+                        {
+                            bool itIsAn = true;
+                            unordered_map<char, int> temp2;
+                            for(auto i : strs[j])
+                                 temp2[i]++;
+                            for(auto i : strs[j])
+                            {
+                                if (temp.find(i) == temp.end() ||
+                                    (temp.find(i) != temp.end() && temp.find(i)->second != temp2[i] ))
+                                {
+                                    itIsAn = false;
+                                    break;
+                                }
+                            }
+                            if (itIsAn == true)
+                            {
+                                visited[j]++;
+                                tempStVec.emplace_back(strs[j]);
+                            }
+                        }
+                    }
+                }
+                out.emplace_back(tempStVec);
+            }
+            cntr++ ; 
+        }
+        return out;
+        */
+    }
+};
