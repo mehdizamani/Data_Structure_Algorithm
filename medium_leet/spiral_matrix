@@ -1,0 +1,77 @@
+Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+
+Example 1:
+
+Input:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+Output: [1,2,3,6,9,8,7,4,5]
+Example 2:
+
+Input:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+
+
+
+
+class Solution {
+public:
+
+// MINE: speed 60% space 80%
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        if(matrix.empty())
+            return {};
+        vector<int> result;
+        int row = matrix.size() - 1;
+        int col = matrix[0].size() - 1;
+        result.reserve((row + 1) * (col + 1));
+        int level = min (row, col) ;
+        level =  (level/2);
+        for(int l = 0; l <= level ; l++)
+        {
+            int i = l , j = l;
+            while(j <= col - l)
+            {
+                result.emplace_back(matrix[i][j]);
+                j++;
+            }
+            j = col - l;
+            i = l + 1;
+            while(i <= row - l)
+            {
+                result.emplace_back(matrix[i][j]);
+                i++;
+            }
+            i = row - l;
+            j = j - 1;
+            
+            // this if is to avoid duplicating the last time we collect data
+            if(result.size() == (row + 1) * (col + 1))
+               break;
+            
+            while(j >= l)
+            {   
+                result.emplace_back(matrix[i][j]);
+                j--;
+            }    
+            j = l;
+            i = i - 1;
+        
+            while(i > l)
+            {   
+                result.emplace_back(matrix[i][j]);
+                i--;
+            }
+         }
+        return result;
+    }
+};
