@@ -1,0 +1,105 @@
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+Input: "23"
+Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+
+
+// Leeetcode approach 100% 25%
+class Solution{
+private:
+	unordered_map<int, string> map;
+public:
+	Solution(){
+		map[2] = "abc";
+		map[3] = "def";
+		map[4] = "ghi";
+		map[5] = "jkl";
+		map[6] = "mno";
+		map[7] = "pqrs";
+		map[8] = "tuv";
+		map[9] = "wxyz";
+	}
+
+public:
+	vector<string> letterCombinations(string digits){
+		vector<string> table;
+		vector<string> res;
+		string str;
+		if (digits.empty()) return res;
+		for (unsigned i = 0; i < digits.size(); i++){
+			table.push_back(map[digits[i] - '0']);
+		}
+		combinationHelper(table, 0, str, res);
+		return res;
+	}
+
+
+private:
+	void combinationHelper(vector<string> table, int curT, string& str,vector<string> &res){
+		if (curT == table.size()){
+			res.push_back(str);
+			return;
+		}
+		string s = table[curT];
+		for (unsigned i = 0; i < s.size(); i++){
+			str += s[i];
+			combinationHelper(table, curT + 1, str, res);
+			str.erase(str.end() - 1);
+		}
+		
+	}
+};
+
+// My approach 50% 40%
+/*class Solution {
+public:
+    int size = 0;
+    vector<string> out;
+    void populate(vector<vector<char>>& input)
+    { 
+        int n = 3;
+        int cntr = 0;
+        char ch = 'a';
+        for(int i = 0 ; i < 8 ; i++)
+        { 
+            if(i + 2 == 7 || i + 2 == 9)
+                n = 4;
+            else 
+                n = 3;
+            while(n > 0)
+            {
+               input[i].emplace_back(ch + cntr);
+               n--;
+               cntr++;
+            }
+        }
+    }
+    void dfs(int i, string s, const string& digits,const vector<vector<char>>& input){
+        if (i == size)
+        {
+            out.emplace_back(s);
+            return;
+        }
+        char c = (char)(digits[i]);
+        int tem = (int) (c - '0');
+        cout<<tem;
+        for(int k = 0; k < input[tem - 2].size() ; k++)
+        {
+            string ss = s + input[tem - 2][k];
+            dfs(i + 1, ss , digits , input);
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty())
+            return {};
+        size = digits.length();
+        vector<vector<char>> input(8);
+        populate(input);
+        
+        dfs(0 , "" , digits, input);
+        return out;
+    }
+};*/
