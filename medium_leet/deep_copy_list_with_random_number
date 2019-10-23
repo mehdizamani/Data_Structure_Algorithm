@@ -1,0 +1,110 @@
+A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+
+Return a deep copy of the list.
+
+ 
+
+Example 1:
+
+
+
+Input:
+{"$id":"1","next":{"$id":"2","next":null,"random":{"$ref":"2"},"val":2},"random":{"$ref":"2"},"val":1}
+
+Explanation:
+Node 1's value is 1, both of its next and random pointer points to Node 2.
+Node 2's value is 2, its next pointer points to null and its random pointer points to itself.
+ 
+
+Note:
+
+You must return the copy of the given head as a reference to the cloned list.
+
+
+
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+
+
+
+// 94%  85%
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head)
+            return head;
+        if (!(head->next)) // if there is only one node
+        {
+            Node* tmp = nullptr;
+            if(!head->random)
+                tmp = new Node(head->val, nullptr, nullptr);
+            else
+            {
+                tmp = new Node(head->val, nullptr, nullptr);
+                tmp->random = tmp;   
+            }
+            return tmp;
+        }
+       
+        unordered_map<Node*, Node*> visited;
+        Node* oldbck = head;
+        Node* newTempNode = new Node(0, nullptr, nullptr);
+        Node* newbck = newTempNode;
+        while(head)
+        {
+            Node* tmp = new Node(head->val);
+            visited[head] = tmp;
+            newTempNode->next = tmp;
+            tmp->next = nullptr;
+            tmp->random = nullptr;
+            newTempNode = tmp;
+            head = head -> next;
+        }
+        head = oldbck;
+        newbck = newbck->next;
+        while(head)
+        {
+            if(visited.find(head->random) != visited.end())
+                visited[head]->random = visited.find(head->random)->second;
+            head = head -> next;
+        }
+        return newbck;
+    }
+};
+
+/*
+
+// LEETCODE 38%   30%
+class Solution {
+unordered_map<Node*, Node*> hmap;
+
+public:
+Node *copyRandomList(Node *head) {
+	if (!head) return NULL;
+	if (hmap.find(head) != hmap.end())
+		return hmap.find(head)->second;
+
+	Node* node = new Node(head->val);
+	hmap[head] = node;
+	node->next = copyRandomList(head->next);
+	node->random = copyRandomList(head->random);
+	return node;
+}
+};
+*/
