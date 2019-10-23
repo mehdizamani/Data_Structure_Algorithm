@@ -1,0 +1,110 @@
+In a row of dominoes, A[i] and B[i] represent the top and bottom halves of the i-th domino.  (A domino is a tile with two numbers from 1 to 6 - one on each half of the tile.)
+
+We may rotate the i-th domino, so that A[i] and B[i] swap values.
+
+Return the minimum number of rotations so that all the values in A are the same, or all the values in B are the same.
+
+If it cannot be done, return -1.
+
+ 
+
+Example 1:
+
+
+
+Input: A = [2,1,2,4,2,2], B = [5,2,6,2,3,2]
+Output: 2
+Explanation: 
+The first figure represents the dominoes as given by A and B: before we do any rotations.
+If we rotate the second and fourth dominoes, we can make every value in the top row equal to 2, as indicated by the second figure.
+Example 2:
+
+Input: A = [3,5,1,2,3], B = [3,6,3,3,4]
+Output: -1
+Explanation: 
+In this case, it is not possible to rotate the dominoes to make one row of values equal.
+
+
+
+class Solution {
+public:
+     // LEETCODE ANSWR 97% 100%
+    int minDominoRotations(vector<int>& A, vector<int>& B) {
+      auto top = A[0], bot = B[0], top1 = 0, bot1 = 0, top2 = 0, bot2 = 0;
+      for (auto i = 0; i < A.size(); ++i) {
+          if (A[i] != top && B[i] != top) top = 0;
+          if (A[i] != bot && B[i] != bot) bot = 0;
+            top1 += A[i] == top;
+            bot1 += B[i] == top;
+            top2 += A[i] == bot;
+            bot2 += B[i] == bot;
+      }
+      return top || bot ? min(A.size() - max(top1, bot1), A.size() - max(top2, bot2)) : -1;
+  }
+    
+    /*
+    // MY Solution 60% and 85%
+    int check (int t, vector<int>& A, vector<int>& B)
+    {
+        if(count(A.begin(), A.end(), t) + count(B.begin(), B.end() , t) < A.size())
+            return -1;
+        int cntr1 = 0;
+        int cntr2 = 0;
+        int i = 0;
+        while(i < A.size())
+        {
+            if(A[i] != t && B[i] != t)
+                return -1;
+            if (A[i] == t && B[i] == t)
+            {
+                i++;
+                continue;
+            }else if (A[i] != t && B[i] == t)
+            {
+                cntr2++;
+            }else if (A[i] == t && B[i] != t)
+            {
+                cntr1++;
+            }
+            i++;
+        }
+        return min(cntr1,cntr2);
+    }
+    int minDominoRotations(vector<int>& A, vector<int>& B) {
+        if(A.size() != B.size() || ( A.size() >= 2 && B.size() >= 2 && 
+                 ((A[0] != A[1] && A[0] != B[1] && B[0] != A[1] && B[0] != B[1]) ||
+                 (A[0] == B[0] && A[1] == B[1] && A[0] != B[1])) ))
+            return -1;
+        if(A.size() == 1 && B.size() == 1)
+           return 0;
+        int tar1 = 0;
+        int tar2 = 0;
+        if(A[0] == A[1] || A[0] == B[1] )
+            tar1 = A[0];
+        if(B[0] == A[1] || B[0] == B[1] )
+            tar2 = B[0];
+        int tar = (tar1 == tar2) ? tar1 : 0;
+        
+        if(tar)
+        {
+            return check(tar, A, B);
+        }
+        else if(tar1 && tar2)
+        {
+            int t1 = check(tar1, A, B);
+            int t2 = check(tar2, A, B);
+            if (t1 != -1 && t2 != -1)
+                return min(t1, t2);
+            else if (t1 == -1 && t2 != -1)
+                return t2;
+            else if (t1 != -1 && t2 == -1)
+                return t1;
+        }else if(tar1)
+            return check(tar1, A, B);
+        else if(tar2)
+            return check(tar2, A, B);
+        return -1;
+        
+    }
+    */
+};
